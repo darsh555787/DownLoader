@@ -7,6 +7,8 @@ import { initializeDatabase } from './database/db.js';
 import { createDownloadRouter } from './routes/downloads.js';
 import { DownloadQueue } from './utils/queue.js';
 import { cleanupOldDownloads } from './utils/downloader.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
