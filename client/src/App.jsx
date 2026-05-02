@@ -74,6 +74,7 @@ function App() {
   });
   const [installPrompt, setInstallPrompt] = useState(null);
   const [installed, setInstalled] = useState(false);
+  const [backendOnline, setBackendOnline] = useState(true);
   const [urls, setUrls] = useState(['']);
   const [format, setFormat] = useState('mp4');
   const [quality, setQuality] = useState('best');
@@ -150,9 +151,9 @@ function App() {
     try {
       const data = await getDownloadStatus();
       setDownloads(data);
+      setBackendOnline(true);
     } catch (error) {
-      // Don't show toast on initial load if backend is simply unreachable
-      console.warn('Could not load downloads:', error.message);
+      setBackendOnline(false);
     }
   };
 
@@ -295,6 +296,21 @@ function App() {
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-8">
+
+        {/* Backend offline banner */}
+        {!backendOnline && (
+          <div className="mb-5 flex items-start gap-3 px-4 py-3 rounded-xl border text-sm
+            bg-amber-50 border-amber-200 text-amber-800
+            dark:bg-amber-900/20 dark:border-amber-700/50 dark:text-amber-300">
+            <span className="text-lg leading-none">⚠️</span>
+            <div>
+              <p className="font-semibold">Backend not connected</p>
+              <p className="text-xs mt-0.5 opacity-80">
+                Set <code className="bg-amber-100 dark:bg-amber-900/40 px-1 rounded">VITE_API_URL</code> in Vercel environment variables to your Railway backend URL, then redeploy.
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Input Card */}
         <div className="rounded-2xl shadow-sm border overflow-hidden mb-6
